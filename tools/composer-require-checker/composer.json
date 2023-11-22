@@ -1,0 +1,13 @@
+{
+    "name": "bindb-client/composer-require-checker",
+    "type": "project",
+  "authors": [
+    {
+            "name": "Benoît wery",
+            "email": "benoit.wery@easytransac.com"
+        }
+    ],
+    "require": {
+        "maglnet/composer-require-checker": "^4.7"
+    }
+}

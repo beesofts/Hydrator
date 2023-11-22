@@ -1,0 +1,13 @@
+{
+    "name": "bindb-client/php-cs-fixer",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Benoît Wery",
+            "email": "benoit.wery@easytransac.com"
+        }
+    ],
+    "require": {
+        "friendsofphp/php-cs-fixer": "^3.27"
+    }
+}

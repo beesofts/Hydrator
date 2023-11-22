@@ -1,0 +1,17 @@
+{
+    "name": "bindb-client/phpstan",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Benoît Wery",
+            "email": "benoit.wery@easytransac.com"
+        }
+    ],
+    "require": {
+        "phpstan/phpstan": "^1.10",
+        "ekino/phpstan-banned-code": "^1.0",
+        "phpstan/phpstan-deprecation-rules": "^1.1",
+        "phpstan/phpstan-phpunit": "^1.3",
+        "phpstan/phpstan-strict-rules": "^1.5"
+    }
+}

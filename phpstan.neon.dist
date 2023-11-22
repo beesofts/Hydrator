@@ -1,0 +1,34 @@
+includes:
+    - tools/phpstan/vendor/ekino/phpstan-banned-code/extension.neon
+    - tools/phpstan/vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - tools/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
+    - tools/phpstan/vendor/phpstan/phpstan-phpunit/rules.neon
+    - tools/phpstan/vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    level: 8
+    paths:
+        - src
+        - tests
+    tmpDir: var/phpstan
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        # no need to define return type precisely for tests data providers
+        - '#^Method .+CasesProvider\(\) return type has no value type specified in iterable type iterable\.$#'
+        # $data could be anything
+        - message: '#Method Beesofts\\Hydrator\\\w+::.* has parameter \$data with no value type specified in iterable type array\.#'
+        - message: '#Method Beesofts\\Hydrator\\Tests\\\w+::.* has parameter \$data with no value type specified in iterable type array\.#'
+        # accessing stdClass
+        - message: '#Variable property access on object\.#'
+          path: src/DataBag.php
+        - message: '#Variable method call on object\.#'
+          path: src/Hydrator.php
+        # allow foreach on stdClass
+        - message: '#Argument of an invalid type iterable\|stdClass supplied for foreach, only iterables are supported\.#'
+          path: src/Hydrator.php
+        # property hydrated with Hydrator
+        - message: '#Property Beesofts\\Hydrator\\Tests\\assets\\SimpleClass::\$privateField is never written, only read\.#'
+          path: tests/assets/SimpleClass.php
+        # here the purpose is to tests the behavior without type
+        - message: '#Property Beesofts\\Hydrator\\Tests\\assets\\ClassWithTypes::\$name has no type specified\.#'
+          path: tests/assets/ClassWithTypes.php
