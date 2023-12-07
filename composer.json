@@ -3,7 +3,7 @@
     "description": "Configure objects hydration with attributes",
     "type": "library",
     "require": {
-        "php": "8.2.*",
+        "php": ">=8.2",
         "ext-mbstring": "*"
     },
     "require-dev": {
