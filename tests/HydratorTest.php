@@ -2,6 +2,7 @@
 
 namespace Beesofts\Hydrator\Tests;
 
+use Beesofts\Hydrator\CaseConverter;
 use Beesofts\Hydrator\Hydrator;
 use Beesofts\Hydrator\Tests\assets\ClassWithCollections;
 use Beesofts\Hydrator\Tests\assets\ClassWithConstructor;
@@ -299,5 +300,30 @@ class HydratorTest extends TestCase
 
         self::assertInstanceOf(ClassWithTypes::class, $object);
         self::assertNull($object->nullablePosition);
+    }
+
+    public function testDefaultPathfinder(): void
+    {
+        $data = [
+            'public_field' => 'Public value',
+        ];
+
+        $object = Hydrator::build(SimpleClass::class, $data, CaseConverter::camelToSnake(...));
+
+        self::assertInstanceOf(SimpleClass::class, $object);
+        self::assertEquals('Public value', $object->publicField);
+    }
+
+    public function testHydratedFieldAttributeIsPriorToDefaultPathfinder(): void
+    {
+        $data = [
+            'simple_path' => 'Simple_value',
+            'simple-path' => 'Simple-value',
+        ];
+
+        $object = Hydrator::build(ClassWithPaths::class, $data, CaseConverter::camelToSnake(...));
+
+        self::assertInstanceOf(ClassWithPaths::class, $object);
+        self::assertEquals('Simple-value', $object->simplePath);
     }
 }

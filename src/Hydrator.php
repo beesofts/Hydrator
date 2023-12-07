@@ -9,14 +9,16 @@ use Beesofts\Hydrator\Exception\NoDataForPathException;
 
 class Hydrator
 {
-    public static function hydrate(object $object, mixed $data): void
+    public static function hydrate(object $object, mixed $data, callable $defaultPathfinder = null): void
     {
         $reflectionClass = new \ReflectionClass($object);
         $dataBag = new DataBag($data);
 
         foreach ($reflectionClass->getProperties() as $property) {
             foreach ($property->getAttributes(HydratedField::class) as $attribute) {
-                $path = $attribute->getArguments()['path'] ?? $property->getName();
+                $path = $attribute->getArguments()['path'] ??
+                    (is_callable($defaultPathfinder) ? $defaultPathfinder($property->getName()) : $property->getName())
+                ;
 
                 try {
                     $value = $dataBag->get($path);
@@ -49,7 +51,7 @@ class Hydrator
                         } else {
                             $collection = [];
                             foreach ($value as $element) {
-                                $collection[] = self::build($collectionOf, $element);
+                                $collection[] = self::build($collectionOf, $element, $defaultPathfinder);
                             }
                             $value = $collection;
                         }
@@ -62,7 +64,7 @@ class Hydrator
                             ('stdClass' !== $propertyType->getName()) &&
                             class_exists($propertyType->getName())
                         ) {
-                            $value = self::build($propertyType->getName(), $value);
+                            $value = self::build($propertyType->getName(), $value, $defaultPathfinder);
                         }
                     }
 
@@ -87,7 +89,7 @@ class Hydrator
      *
      * @return T
      */
-    public static function build(string $classname, mixed $data): ?object
+    public static function build(string $classname, mixed $data, callable $defaultPathfinder = null): ?object
     {
         if (!class_exists($classname)) {
             throw new HydratorException(sprintf('Class "%s" does not exists', $classname));
@@ -104,7 +106,7 @@ class Hydrator
         }
 
         $object = $reflectionClass->newInstanceWithoutConstructor();
-        self::hydrate($object, $data);
+        self::hydrate($object, $data, $defaultPathfinder);
 
         return $object;
     }
@@ -116,12 +118,12 @@ class Hydrator
      *
      * @return list<T|null>
      */
-    public static function buildArrayOf(string $classname, array $data): array
+    public static function buildArrayOf(string $classname, array $data, callable $defaultPathfinder = null): array
     {
         $values = [];
 
         foreach ($data as $datum) {
-            $values[] = self::build($classname, $datum);
+            $values[] = self::build($classname, $datum, $defaultPathfinder);
         }
 
         return $values;
