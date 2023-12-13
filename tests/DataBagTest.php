@@ -185,4 +185,35 @@ class DataBagTest extends TestCase
         self::assertEquals([1, 2, 3], $dataBag->get('many-values'));
         self::assertEquals('value.with.dots', $dataBag->get('"key.with.dots"'));
     }
+
+    public static function rootPathCasesProvider(): iterable
+    {
+        return [
+            [
+                [
+                    'foo' => 'bar',
+                    'bim' => 'bam',
+                ],
+            ],
+            [
+                (object) [
+                    'foo' => 'bar',
+                    'bim' => 'bam',
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('rootPathCasesProvider')]
+    public function testRootPath(object|array $data): void
+    {
+        $data = [
+            'foo' => 'bar',
+            'bim' => 'bam',
+        ];
+
+        $dataBag = new DataBag($data);
+
+        self::assertEquals($data, $dataBag->get('*'));
+    }
 }

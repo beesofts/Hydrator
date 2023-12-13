@@ -11,6 +11,7 @@ use Beesofts\Hydrator\Tests\assets\ClassWithPaths;
 use Beesofts\Hydrator\Tests\assets\ClassWithTypes;
 use Beesofts\Hydrator\Tests\assets\Embeds\Position;
 use Beesofts\Hydrator\Tests\assets\Embeds\ReadOnlyPosition;
+use Beesofts\Hydrator\Tests\assets\FactoryFromRoot;
 use Beesofts\Hydrator\Tests\assets\SimpleClass;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -325,5 +326,21 @@ class HydratorTest extends TestCase
 
         self::assertInstanceOf(ClassWithPaths::class, $object);
         self::assertEquals('Simple-value', $object->simplePath);
+    }
+
+    public function testFactoryFromRoot(): void
+    {
+        $data = [
+           'title' => 'Title',
+           'latitude' => '36.169941',
+           'longitude' => '-115.139830',
+        ];
+
+        $object = Hydrator::build(FactoryFromRoot::class, $data);
+
+        self::assertInstanceOf(FactoryFromRoot::class, $object);
+        self::assertEquals('Title', $object->title);
+        self::assertEquals(36.169941, $object->position->latitude);
+        self::assertEquals(-115.139830, $object->position->longitude);
     }
 }

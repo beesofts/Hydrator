@@ -18,7 +18,7 @@ class DataBag
     {
         $this->currentPath = $path;
 
-        return $this->getIn(self::resolvePath($path), $this->data);
+        return '*' === $path ? $this->data : $this->getIn(self::resolvePath($path), $this->data);
     }
 
     /**
