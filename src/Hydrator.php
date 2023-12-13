@@ -99,6 +99,13 @@ class Hydrator
             return null;
         }
 
+        if (
+            is_object($data) &&
+            (get_class($data) === $classname)
+        ) {
+            return $data;
+        }
+
         $reflectionClass = new \ReflectionClass($classname);
 
         if (0 === count($reflectionClass->getAttributes(HydratedObject::class))) {

@@ -343,4 +343,19 @@ class HydratorTest extends TestCase
         self::assertEquals(36.169941, $object->position->latitude);
         self::assertEquals(-115.139830, $object->position->longitude);
     }
+
+    public function testDontRebuildValueIsAlreadyAppropriateClass(): void
+    {
+        $data = [
+           'name' => 'Name',
+           'position' => new ReadOnlyPosition(36.169941, -115.139830),
+        ];
+
+        $object = Hydrator::build(ClassWithTypes::class, $data);
+
+        self::assertInstanceOf(ClassWithTypes::class, $object);
+        self::assertEquals('Name', $object->name);
+        self::assertEquals(36.169941, $object->position->latitude);
+        self::assertEquals(-115.139830, $object->position->longitude);
+    }
 }
