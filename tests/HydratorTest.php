@@ -6,12 +6,14 @@ use Beesofts\Hydrator\CaseConverter;
 use Beesofts\Hydrator\Hydrator;
 use Beesofts\Hydrator\Tests\assets\ClassWithCollections;
 use Beesofts\Hydrator\Tests\assets\ClassWithConstructor;
+use Beesofts\Hydrator\Tests\assets\ClassWithEnum;
 use Beesofts\Hydrator\Tests\assets\ClassWithHydration;
 use Beesofts\Hydrator\Tests\assets\ClassWithPaths;
 use Beesofts\Hydrator\Tests\assets\ClassWithTypes;
 use Beesofts\Hydrator\Tests\assets\Embeds\Position;
 use Beesofts\Hydrator\Tests\assets\Embeds\ReadOnlyPosition;
 use Beesofts\Hydrator\Tests\assets\FactoryFromRoot;
+use Beesofts\Hydrator\Tests\assets\GroupEnum;
 use Beesofts\Hydrator\Tests\assets\SimpleClass;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -357,5 +359,19 @@ class HydratorTest extends TestCase
         self::assertEquals('Name', $object->name);
         self::assertEquals(36.169941, $object->position->latitude);
         self::assertEquals(-115.139830, $object->position->longitude);
+    }
+
+    public function testHydrateEnum(): void
+    {
+        $data = [
+            'name' => 'Mr Root',
+            'group' => 'admin',
+        ];
+
+        $object = Hydrator::build(ClassWithEnum::class, $data);
+
+        self::assertInstanceOf(ClassWithEnum::class, $object);
+        self::assertEquals('Mr Root', $object->name);
+        self::assertEquals(GroupEnum::from('admin'), $object->group);
     }
 }

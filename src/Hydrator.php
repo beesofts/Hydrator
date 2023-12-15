@@ -109,7 +109,15 @@ class Hydrator
         $reflectionClass = new \ReflectionClass($classname);
 
         if (0 === count($reflectionClass->getAttributes(HydratedObject::class))) {
-            return new $classname($data);
+            if (enum_exists($classname)) {
+                $reflectionEnum = new \ReflectionEnum($classname);
+                if ($reflectionEnum->isBacked()) {
+                    // @phpstan-ignore-next-line
+                    return $classname::from($data);
+                }
+            } else {
+                return new $classname($data);
+            }
         }
 
         $object = $reflectionClass->newInstanceWithoutConstructor();
