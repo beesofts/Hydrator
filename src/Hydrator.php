@@ -9,7 +9,7 @@ use Beesofts\Hydrator\Exception\NoDataForPathException;
 
 class Hydrator
 {
-    public static function hydrate(object $object, mixed $data, callable $defaultPathfinder = null): void
+    public static function hydrate(object $object, mixed $data, ?callable $defaultPathfinder = null): void
     {
         $reflectionClass = new \ReflectionClass($object);
         $dataBag = new DataBag($data);
@@ -89,7 +89,7 @@ class Hydrator
      *
      * @return T
      */
-    public static function build(string $classname, mixed $data, callable $defaultPathfinder = null): ?object
+    public static function build(string $classname, mixed $data, ?callable $defaultPathfinder = null): ?object
     {
         if (!class_exists($classname)) {
             throw new HydratorException(sprintf('Class "%s" does not exists', $classname));
@@ -133,7 +133,7 @@ class Hydrator
      *
      * @return list<T|null>
      */
-    public static function buildArrayOf(string $classname, array $data, callable $defaultPathfinder = null): array
+    public static function buildArrayOf(string $classname, array $data, ?callable $defaultPathfinder = null): array
     {
         $values = [];
 
