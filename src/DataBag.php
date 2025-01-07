@@ -10,7 +10,7 @@ class DataBag
     private string $currentPath = '';
 
     public function __construct(
-        private readonly object|array $data
+        private readonly object|array $data,
     ) {
     }
 

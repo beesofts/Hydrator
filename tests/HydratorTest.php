@@ -333,9 +333,9 @@ class HydratorTest extends TestCase
     public function testFactoryFromRoot(): void
     {
         $data = [
-           'title' => 'Title',
-           'latitude' => '36.169941',
-           'longitude' => '-115.139830',
+            'title' => 'Title',
+            'latitude' => '36.169941',
+            'longitude' => '-115.139830',
         ];
 
         $object = Hydrator::build(FactoryFromRoot::class, $data);
@@ -349,8 +349,8 @@ class HydratorTest extends TestCase
     public function testDontRebuildValueIsAlreadyAppropriateClass(): void
     {
         $data = [
-           'name' => 'Name',
-           'position' => new ReadOnlyPosition(36.169941, -115.139830),
+            'name' => 'Name',
+            'position' => new ReadOnlyPosition(36.169941, -115.139830),
         ];
 
         $object = Hydrator::build(ClassWithTypes::class, $data);
