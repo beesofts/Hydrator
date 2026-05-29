@@ -1,7 +1,7 @@
 {
     "name": "bindb-client/composer-require-checker",
     "type": "project",
-  "authors": [
+    "authors": [
     {
             "name": "Benoît wery",
             "email": "benoit.wery@easytransac.com"
